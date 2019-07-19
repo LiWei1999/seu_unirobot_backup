@@ -7,6 +7,7 @@ using namespace boost::program_options;
 
 Options::Options(): opts_desc_("  Options description")
 {
+    // 向option_description对象添加选项
     opts_desc_.add_options()
     ("help,h", "Print this message and exit.")
     ("player,p", value<int>()->default_value(0),
@@ -33,7 +34,8 @@ bool Options::init(int argc, char **argv)
 {
     try
     {
-        store(parse_command_line(argc, argv, opts_desc_), var_map_);
+        store(parse_command_line(argc, argv, opts_desc_), var_map_); // 解析命令行输入的参数,并存储至variables_map中
+        // ? 更新外部变量
         id_ = arg<int>("player");
         use_debug_ = arg<bool>("debug");
         use_camera_ = arg<bool>("camera");

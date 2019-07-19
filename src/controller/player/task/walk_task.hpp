@@ -6,6 +6,7 @@
 #include "engine/walk/walk_engine.hpp"
 #include "core/adapter.hpp"
 
+// x：纵向步长，y：横向步长，dir：脚的转角，enable：是否执行WE
 class WalkTask: public Task
 {
 public:

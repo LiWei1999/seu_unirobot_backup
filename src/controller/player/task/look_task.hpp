@@ -6,6 +6,7 @@
 #include <vector>
 #include <eigen3/Eigen/Dense>
 
+// yaw：偏航角；pitch：俯仰角（参见欧拉角）
 class LookTask: public Task
 {
 public:

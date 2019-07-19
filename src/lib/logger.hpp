@@ -12,6 +12,7 @@ enum log_level
     LOG_HIGH
 };
 
+// print without specified colour
 inline std::ostream& endll(std::ostream &os)
 {
     return os<<"\033[0m"<<std::endl;

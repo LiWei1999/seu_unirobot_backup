@@ -32,9 +32,9 @@ public:
     task_list OnStateTick();
 
 private:
-    float exit_kick_dis_;
-    float retreat_alpha_;
-    float retreat_beta_;
+    float exit_kick_dis_;   // 踢球容许的最大离球距离，大于该值不应踢球
+    float retreat_alpha_;   // 踢球容许的最小离球横向距离（绝对值），小于该值应调整
+    float retreat_beta_;    // 踢球容许的最小离球纵向距离（绝对值），小于该值应调整
 };
 
 #endif

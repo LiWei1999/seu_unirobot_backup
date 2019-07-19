@@ -77,7 +77,7 @@ struct ball_block
     Eigen::Vector2d global;
     Eigen::Vector2d self;
     Eigen::Vector2i pixel;
-    float alpha, beta;
+    float alpha, beta; // alpha：左负右正；beta：上小下大
     bool can_see=false;
 };
 

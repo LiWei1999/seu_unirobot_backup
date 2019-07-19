@@ -1,3 +1,4 @@
+// 缓冲队列
 #ifndef __ADAPTER_HPP
 #define __ADAPTER_HPP
 
@@ -15,6 +16,8 @@ public:
     Adapter()
     {
     }
+
+    // 读取各个角度信息
     inline std::map<int, float> get_degs()
     {
         std::map<int, float> degs;
@@ -44,6 +47,7 @@ public:
         }
         return degs;
     }
+
     inline std::map<int, float> get_body_degs() const
     {
         bd_mutex_.lock();
@@ -51,6 +55,7 @@ public:
         bd_mutex_.unlock();
         return res;
     }
+
     inline std::map<int, float> get_head_degs() const
     {
         hd_mutex_.lock();
@@ -58,6 +63,7 @@ public:
         hd_mutex_.unlock();
         return res;
     }
+
     inline bool add_body_degs(const std::map<int, float> &jdmap)
     {
         if (!is_alive_)
@@ -71,6 +77,7 @@ public:
         bd_mutex_.unlock();
         return true;
     }
+
     inline bool add_head_degs(std::map<int, float> &jdmap)
     {
         if (!is_alive_)
@@ -125,11 +132,11 @@ public:
     std::atomic_bool run_action_;
 
 private:
-    std::list< std::map<int, float> > head_degs_list;
+    std::list< std::map<int, float> > head_degs_list; // 角度list用于存储角度map
     std::list< std::map<int, float> > body_degs_list;
     std::map<int, float> latest_head_deg;
     std::map<int, float> latest_body_deg;
-    mutable std::mutex bd_mutex_, hd_mutex_;
+    mutable std::mutex bd_mutex_, hd_mutex_; // 此二互斥锁分别对应上述两个list
     bool is_alive_;
 };
 

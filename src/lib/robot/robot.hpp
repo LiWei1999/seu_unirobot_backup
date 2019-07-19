@@ -1,3 +1,4 @@
+// 当前机器人数据模型，每次从缓冲区取出数据存到此处，再发给机器人
 #ifndef __ROBOT_HPP
 #define __ROBOT_HPP
 

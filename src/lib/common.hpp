@@ -19,7 +19,7 @@ inline std::string get_time()
 inline std::string get_project_dir()
 {
     char buf1[256];
-	getcwd(buf1, sizeof(buf1));
+	getcwd(buf1, sizeof(buf1)); // get Current Working Directory
     std::string cwd(buf1);
     std::string::size_type pos = cwd.find("/bin");
     if(pos == std::string::npos)

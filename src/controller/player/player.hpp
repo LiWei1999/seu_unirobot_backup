@@ -33,7 +33,7 @@ private:
     std::list<task_ptr> play_without_gc();
     std::list<task_ptr> think();
 
-    bool regist();
+    bool regist(); // 注册传感器
     void unregist();
     sensor_ptr get_sensor(const std::string &name);
 private:

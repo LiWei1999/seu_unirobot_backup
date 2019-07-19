@@ -10,7 +10,7 @@ import time
 import signal
 import ssh_connection
 
-if __name__ == '__main__': 
+if __name__ == '__main__': # 若正在直接运行本文件（即python start_robot.py)
     if not common.check_argv(sys.argv):
         common.print_error('no enough arguments')
         common.print_info('%s id params')
@@ -22,7 +22,7 @@ if __name__ == '__main__':
         exit(3)
     j=2
     for i in range(2,len(sys.argv)):
-        if '-j' in sys.argv[i]:
+        if '-j' in sys.argv[i]: # j 代表多线程
             j=int(sys.argv[i][2:])
             break
 

@@ -182,7 +182,7 @@ void Vision::run()
             cudaMemcpy(dev_undis_, dev_ori_, ori_size_, cudaMemcpyDeviceToDevice);
         //cudaBGR2YUV422(dev_undis_, dev_yuyv_, w_, h_);
         cudaResizePacked(dev_undis_, w_, h_, dev_sized_, net_.w, net_.h);
-        cudaBGR2RGBfp(dev_sized_, dev_rgbfp_, net_.w, net_.h);
+        cudaBGR2RGBfp(dev_sized_, dev_rgbfp_, net_.w, net_.h); // 转为浮点型供神经网络使用
         /*
         const int *fieldBorders;
         if(detect_filed_)

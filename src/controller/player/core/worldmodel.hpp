@@ -1,3 +1,4 @@
+// 几乎订阅了所有信息
 #ifndef __WORLD_MODEL_HPP
 #define __WORLD_MODEL_HPP
 

@@ -33,7 +33,7 @@ bool Gpio::gpio_export()
     char fnBuffer[MAX_BUF];
 
     fileDescriptor = open(SYSFS_GPIO_DIR "/export", O_WRONLY);
-    if (fileDescriptor < 0) 
+    if (fileDescriptor < 0) // 若文件打开失败
     {
         LOG(LOG_WARN) << "gpio_export unable to open gpio: "<< find_io(io_) << endll;
         return false;
@@ -42,9 +42,10 @@ bool Gpio::gpio_export()
     length = snprintf(commandBuffer, sizeof(commandBuffer), "%d", io_);
 
     snprintf(fnBuffer, sizeof(fnBuffer), SYSFS_GPIO_DIR  "/gpio%d", io_);
-    if(access(fnBuffer, F_OK) != 0)
+
+    if(access(fnBuffer, F_OK) != 0) // 若文件存在
     {
-        if (write(fileDescriptor, commandBuffer, length) != length) 
+        if (write(fileDescriptor, commandBuffer, length) != length) // 写入, 若长度不一致则报错
         {
             LOG(LOG_WARN) << "gpio "<<find_io(io_)<<" export error!" <<endll;
             return false;
