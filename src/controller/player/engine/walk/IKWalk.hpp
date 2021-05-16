@@ -13,19 +13,19 @@ struct IKWalkParameters {
      * Model leg typical length between
      * each rotation axis
      */
-    double distHipToKnee;
+    double distHipToKnee;     //distance
     double distKneeToAnkle;
     double distAnkleToGround;
     /**
      * Distance between the two feet in lateral
      * axis while in zero position
      */
-    double distFeetLateral;
+    double distFeetLateral;  //两只脚0度时外侧距离
     /**
      * Complete (two legs) walk cycle frequency
      * in Hertz
      */
-    double freq;
+    double freq;   //步行周期频率
     /**
      * Global gain multiplying all time
      * dependant movement between 0 and 1.
@@ -41,14 +41,14 @@ struct IKWalkParameters {
      * 0 is null double support and full single support
      * 1 is full double support and null single support
      */
-    double supportPhaseRatio;
+    double supportPhaseRatio;                 //
     /**
      * Lateral offset on default foot 
      * position in meters (foot lateral distance)
      * 0 is default
      * > 0 is both feet external offset
      */
-    double footYOffset;
+    double footYOffset;  //脚的横向偏移
     /**
      * Forward length of each foot step
      * in meters
@@ -56,12 +56,12 @@ struct IKWalkParameters {
      * <0 goes backward
      * (dynamic parameter)
      */
-    double stepGain;
+    double stepGain;                               //步长
     /**
      * Vertical rise height of each foot
      * in meters (positive)
      */
-    double riseGain;
+    double riseGain;                       //每只脚垂直上升高度
     /**
      * Angular yaw rotation of each 
      * foot for each step in radian.
@@ -78,19 +78,19 @@ struct IKWalkParameters {
      * <0 goes right
      * (dynamic parameter)
      */
-    double lateralGain;
+    double lateralGain;  //每步的横向长度
     /**
      * Vertical foot offset from trunk 
      * in meters (positive)
      * 0 is in init position
      * > 0 set the robot lower to the ground
      */
-    double trunkZOffset;
+    double trunkZOffset;      //躯干垂直脚偏移
     /**
      * Lateral trunk oscillation amplitude
      * in meters (positive)
      */
-    double swingGain;
+    double swingGain;  //躯干侧向振幅
     /**
      * Lateral angular oscillation amplitude
      * of swing trunkRoll in radian

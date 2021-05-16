@@ -39,7 +39,7 @@ namespace motion
         float yaw_, pitch_;
 
         std::atomic_int head_state_;
-        const float search_post_div_ = 0.8;
+        const float search_post_div_ = 0.8;//修改的球门柱识别角度间距，原0.8
         std::vector<Eigen::Vector2f> ball_search_table_;
         mutable std::mutex param_mtx_;
     };

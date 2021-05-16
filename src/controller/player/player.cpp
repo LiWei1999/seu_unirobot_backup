@@ -101,7 +101,7 @@ list<task_ptr> Player::think()
         {
             if(played_)
                 self_location_count_++;
-            if(self_location_count_ == 600)
+            if(self_location_count_ == 600)                                         //寻找球门时间
             {
                 WM->localization_time_ = true;
                 self_location_count_ = 0;

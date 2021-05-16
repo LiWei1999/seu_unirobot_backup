@@ -24,17 +24,21 @@ std::list<task_ptr> Player::play_with_gc()
     int kickoff = (int)gc_data.kickOffTeam;
     int team_index = gc_data.teams[0].teamNumber == CONF->team_number()?0:1;
 
-    switch (gc_data.state)
+    switch (gc_data.state)                                                                          //位置信息在config文件中修改
     {
         case STATE_INITIAL:
-            if(kickoff == CONF->team_number() || kickoff == DROPBALL)
+            if(kickoff == CONF->team_number() || kickoff == DROPBALL)                               //作为进攻方设置入场位置，teamnumber在config文件中修改
             {
                 if(CONF->get_my_role()=="front")
                 {
-                    if(kickoff == CONF->team_number())
+                    /*if(kickoff == CONF->team_number())
                         WM->set_my_pos(kickoff_pos_);
                     else
-                        WM->set_my_pos(init_pos_);
+                        WM->set_my_pos(init_pos_);*/
+                    if(WM->self().dir>45.0)                                                         
+                        WM->set_my_pos(Vector2d(start_pos_.x(), -start_pos_.y()));
+                    else
+                        WM->set_my_pos(start_pos_);                                         
                 }
                 else if(CONF->get_my_role()=="guard")
                 {
@@ -48,7 +52,7 @@ std::list<task_ptr> Player::play_with_gc()
                     WM->set_my_pos(init_pos_);
                 }
             }
-            else
+            else                                                                                    //作为防守方设置入场位置
             {
                 if(WM->self().dir>45.0) 
                     WM->set_my_pos(Vector2d(start_pos_.x(), -start_pos_.y()));
@@ -59,10 +63,11 @@ std::list<task_ptr> Player::play_with_gc()
             tasks.push_back(make_shared<LookTask>(head_init[0], head_init[1]));
             break;
         case STATE_READY:
-            if(kickoff == CONF->team_number() || kickoff == DROPBALL)
+            if(kickoff == CONF->team_number() || kickoff == DROPBALL)                               //作为进攻方执行入场动作，或进球后回到初始位置
             {
                 if(CONF->get_my_role()=="front")
                 {
+                    /*LOG(LOG_INFO)<<"played:"<<played_<<endll;
                     if(!played_)
                     {
                        if(kickoff == CONF->team_number())
@@ -70,8 +75,8 @@ std::list<task_ptr> Player::play_with_gc()
                         else
                             WM->set_my_pos(init_pos_);
                     }
-                    else
-                        tasks.push_back(skill_goto(WM->self(), init_pos_, 0.0));
+                    else*/
+                    tasks.push_back(skill_goto(WM->self(), kickoff_pos_, 0.0));
                 }
                 else if(CONF->get_my_role()=="guard")
                 {
@@ -82,7 +87,7 @@ std::list<task_ptr> Player::play_with_gc()
                     WM->set_my_pos(init_pos_);
                 }
             }
-            else
+            else                                                                                    //作为防守方执行入场动作，或进球后回到初始位置
             {
                 if(CONF->get_my_role()=="front")
                 {

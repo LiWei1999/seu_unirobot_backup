@@ -225,6 +225,7 @@ namespace motion
             std::shared_ptr<Imu> sptr = std::dynamic_pointer_cast<Imu>(pub);
             imu_mtx_.lock();
             imu_data_ = sptr->data();
+            //LOG(LOG_INFO) << "imu:" << imu_data_.yaw << endl;
             imu_mtx_.unlock();
             return;
         }
@@ -260,8 +261,8 @@ namespace motion
         if(MADT->run_action_) 
             return;
         para_mutex_.lock();
-        params_.stepGain = x;
-        params_.lateralGain = y;
+        params_.stepGain = x; 
+        params_.lateralGain = y;   //横向步长
         params_.turnGain = d;
         params_.enabledGain = enable?1.0:0.0;
         walk_state_ = enable?WALK_NORMAL:WALK_STOP;
@@ -276,7 +277,7 @@ namespace motion
 
     void WalkEngine::run_walk(const Rhoban::IKWalkParameters& params, double timeLength, double& phase, double& time)
     {
-        //LOG(LOG_WARN)<<walk_state_<<endll;
+        //LOG(LOG_WARN)<<"run_walk:"<< walk_state_<<endll; //新加
         struct Rhoban::IKWalkOutputs outputs;
         std::map<int, float> jdegs;
         float init_dir = WM->self().dir;
@@ -322,7 +323,7 @@ namespace motion
         float rate = timeLength/time_length_;
 
         self_block blk = WM->self();
-        Vector2d currpos(blk.global.x(), blk.global.y());
+        Vector2d currpos(blk.global.x(), blk.global.y());  //当前位置
         double dir = (init_dir+blk.dir)/2;
         dir = normalize_deg(dir);
         Vector2d temp=currpos+rotation_mat_2d(-dir)*Vector2d((params.stepGain-XOffset_)*rate*nav_coef_.x(), 
@@ -356,7 +357,7 @@ namespace motion
                 last_walk_state_ = WALK_STOP;
                 continue;
             }
-            //LOG(LOG_INFO)<<walk_s[walk_state_]<<endll;
+            //LOG(LOG_INFO)<< "isalive:" << walk_s[walk_state_]<<endll; //新加
             if(walk_state_ == WALK_TO_ACT)
             {
                 tempParams.stepGain = 0.0;

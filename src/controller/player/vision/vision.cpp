@@ -29,8 +29,8 @@ Vision::Vision(): Timer(CONF->get_config_value<int>("vision_period"))
     parser::parse(CONF->get_config_value<string>(CONF->player() + ".camera_info_file"), camera_infos_);
     parser::parse(CONF->get_config_value<string>(CONF->player() + ".camera_params_file"), params_);
     LOG(LOG_INFO) << setw(12) << "algorithm:" << setw(18) << "[vision]" << " started!" << endll;
-    ball_id_=0;
-    post_id_=1;
+    ball_id_=1;
+    post_id_=0;
     ball_prob_ = CONF->get_config_value<float>("detection.ball");
     post_prob_ = CONF->get_config_value<float>("detection.post");
     min_ball_w_ = CONF->get_config_value<int>("detection.ball_w");
@@ -266,6 +266,7 @@ void Vision::run()
                 vector< goal_post > posts_;
                 for(auto &post: post_dets_)
                 {
+                    dir=imu_data_vison.yaw+head_yaw;
                     post_num++;
                     if(post_num>2) break;
                     goal_post temp;
@@ -276,6 +277,7 @@ void Vision::run()
                     Vector2d post_pos = camera2self(odo_res, head_yaw);
                     temp._theta = azimuth_deg(post_pos);
                     posts_.push_back(temp);
+                    
                     if(posts_.size()==2)
                     {
                         if(post_dets_[0].x<post_dets_[1].x)
@@ -290,12 +292,26 @@ void Vision::run()
                         }
                         break;
                     }
+                    // if(posts_.size()==1)                                                  //imu判断
+                    // {
+                    //     if(dir<0){
+                    //     posts_[0].type = goal_post::SENSORMODEL_POST_R;
+                    //     }
+                    //     else if(dir>0){
+                    //     posts_[0].type = goal_post::SENSORMODEL_POST_L;
+                    //     }
+                    // LOG(LOG_INFO) << "dir:" << dir << endl;
+                    // LOG(LOG_INFO) << "POST_TYPE:" << posts_[0].type << endl;
+                    // }
                 }
+                
+                LOG(LOG_INFO) << "POST_SIZE:" << posts_.size() << endl;
+                //LOG(LOG_INFO) << " head_yaw" << head_yaw << endl;
                 if(posts_.size()>0)
                 {
                     can_see_post_count_ ++;
                     SL->update(player_info(p.global.x(), p.global.y(), p.dir), posts_);
-                    if(can_see_post_count_>10)
+                    if(can_see_post_count_>10||posts_.size()==2)
                     {
                         can_see_post_ = true;
                         localization_ = false;

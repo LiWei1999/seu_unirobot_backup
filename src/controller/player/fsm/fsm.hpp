@@ -30,14 +30,14 @@ protected:
 
 typedef std::shared_ptr<FSMState> FSMState_Ptr;
 
-class FSM
+class FSM          //状态机，统管所有状态
 {
 public:
     FSM()
     {
     }
 
-    task_list Trans(fsm_state state)
+    task_list Trans(fsm_state state)      //状态转移
     {
         task_list tasks, tlist;
         tasks = states_[current_state_]->OnStateExit();
@@ -47,12 +47,12 @@ public:
         return tasks;
     }
 
-    task_list Tick()
+    task_list Tick()  //每帧调用
     {
         return states_[current_state_]->OnStateTick();
     }
     
-    bool Register(fsm_state s, FSMState_Ptr state)
+    bool Register(fsm_state s, FSMState_Ptr state) //注册新的状态
     {
         states_[s] = state;
         return true;
@@ -63,7 +63,7 @@ public:
         return current_state_;
     }
 
-    void set_state(fsm_state s)
+    void set_state(fsm_state s) //设置初始状态
     {
         current_state_ = s;
     }

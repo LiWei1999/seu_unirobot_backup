@@ -92,7 +92,7 @@ public:
     void reset_hear_info();
 
 public:
-    Eigen::Vector2d opp_post_left, opp_post_right;
+    Eigen::Vector2d opp_post_left, opp_post_right, opp_post_mid;       //修改
     std::atomic_bool localization_time_;
     std::atomic_bool no_power_;
     

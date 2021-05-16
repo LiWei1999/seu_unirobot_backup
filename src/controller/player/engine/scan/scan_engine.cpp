@@ -94,7 +94,7 @@ void ScanEngine::run()
     float yaw, pitch;
     while(is_alive_)
     {
-        if(head_state_ == HEAD_STATE_SEARCH_BALL)
+        if(head_state_ == HEAD_STATE_SEARCH_BALL)                                           //找球动作
         {
             ball_block ball = WM->ball();
             for(int i=0; i<ball_search_table_.size()&&!ball.can_see; i++)
@@ -116,13 +116,13 @@ void ScanEngine::run()
             if(ball.can_see)
                 head_state_ = HEAD_STATE_TRACK_BALL;
         }
-        else if(head_state_ == HEAD_STATE_SEARCH_POST)
+        else if(head_state_ == HEAD_STATE_SEARCH_POST)                                      //找球门动作
         {
             for(int i=1;i>=0;i--)
             {
                 jdmap[id_pitch] = post_search_table[i*2][0];
                 for(float ya=post_search_table[i*2][1]; !VISION->can_see_post_ && fabs(ya)<=fabs(post_search_table[i*2+1][1])+0.1; 
-                        ya+=pow(-1, i+1)*search_post_div_)
+                        ya+=pow(-1, i+1)*search_post_div_)  
                 {
                     jdmap[id_yaw] = ya;
                     while (!MADT->head_empty())
@@ -140,7 +140,7 @@ void ScanEngine::run()
             search_post_end_ = true;
             head_state_ = HEAD_STATE_LOOKAT;
         }
-        else if(head_state_ == HEAD_STATE_TRACK_BALL)
+        else if(head_state_ == HEAD_STATE_TRACK_BALL)                                       //摄像头跟随球
         {
             ball_block ball = WM->ball();
             std::vector<double> head_degs = ROBOT->get_head_degs();

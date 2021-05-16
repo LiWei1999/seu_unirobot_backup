@@ -77,7 +77,7 @@ int KA::goalPostUpdate(const vector< goal_post > & posts_)
         }
         else //unknown
         {
-          postPos.insert(postPos.end(), postPosL.begin(), postPosL.end());
+          postPos.insert(postPos.end(), postPosL.begin(), postPosL.end());          
           postPos.insert(postPos.end(), postPosR.begin(), postPosR.end());
         }
            
@@ -87,13 +87,17 @@ int KA::goalPostUpdate(const vector< goal_post > & posts_)
         Vector2f pppp;
         for(const Vector2f & fp: postPos)
 	      {
-	          bearErr = normalize_deg(azimuth_deg(fp - pos)-now_state.dir-post._theta);
-            distErr = (fp - pos).norm() - post._distance;
+	          bearErr = normalize_deg(azimuth_deg(fp - pos)-now_state.dir-post._theta);//预测误差
+            distErr = (fp - pos).norm() - post._distance;//观测误差
+            LOG(LOG_INFO) << "bearErr:" << bearErr << endl;
+            LOG(LOG_INFO) << "distErr:" << distErr << endl;
 	          // cout<<fp.x()<<"  "<<fp.y()<<"  "<<abs(bearErr)<<"  "<<abs(distErr)<<endl;
 	          // cout<<(fp - pos).angle()<<"  "<<now_state.dir<<"  "<<post._theta<<endl;
-	          if(20*abs(bearErr)+abs(distErr)<minErr)// && abs(normalize_deg(azimuth(fp - pos)-now_state.dir))<=50)
+
+	          if(10*abs(bearErr)+abs(distErr)<minErr)// && abs(normalize_deg(azimuth(fp - pos)-now_state.dir))<=50)
 	          {
-	            minErr=20*abs(bearErr)+abs(distErr);
+              //比例系数初始值为20,表示着预测误差和观测误差的比值，自定位过程中对自己预测和观测结果的信任程度
+	            minErr=10*abs(bearErr)+abs(distErr);  //20
 	            float M=fp.y()-now_state.y;
               float N1=fp.x()-now_state.x;
 	            if(size==1)
@@ -120,7 +124,7 @@ int KA::goalPostUpdate(const vector< goal_post > & posts_)
 	            }
 	        }
 	      }
-        LOG(LOG_INFO)<<pppp.transpose()<<endll;
+        //LOG(LOG_INFO)<<pppp.transpose()<<endll;
 	      flag++;
     }
     return size;

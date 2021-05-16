@@ -11,8 +11,9 @@ WorldModel::WorldModel()
     fall_direction_ = FALL_NONE;
     support_foot_ = robot::DOUBLE_SUPPORT;
     player_infos_[CONF->id()].id = CONF->id();
-    opp_post_left = Vector2d(SOCCERMAP->width()/200.0, SOCCERMAP->goalWidth()/200.0);
-    opp_post_right = Vector2d(SOCCERMAP->width()/200.0, -SOCCERMAP->goalWidth()/200.0);
+    opp_post_left = Vector2d(SOCCERMAP->width()/200.0, SOCCERMAP->goalWidth()/200.0 -2);         //门柱坐标修改    (4.5,1.3)->(4.5,-0.7)
+    opp_post_right = Vector2d(SOCCERMAP->width()/200.0, -SOCCERMAP->goalWidth()/200.0 -0.5);        // (4.5,-1.3)->(4.5,-1.8)
+    opp_post_mid = Vector2d(4.5,-1.25);
     localization_time_ = false;
     no_power_ = true;
 }

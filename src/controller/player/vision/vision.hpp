@@ -46,6 +46,8 @@ public:
 private:
     Eigen::Vector2d odometry(const Eigen::Vector2i &pos, const robot_math::TransformMatrix &camera_matrix);
     Eigen::Vector2d camera2self(const Eigen::Vector2d &pos, double head_yaw);
+    Imu::imu_data imu_data_vison;//修改
+    float dir=0;//修改
 private:
     void run();
     void send_image(const cv::Mat &src);

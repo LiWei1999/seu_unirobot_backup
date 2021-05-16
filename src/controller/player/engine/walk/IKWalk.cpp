@@ -35,6 +35,8 @@ bool IKWalk::walk(
     //During foot backward movement, constant velocity is
     //apply because both foot must have the same velocity 
     //during double support phase.
+    //脚在t=0和t=stepLength之间后退，然后向前。自定义速度（切线）应用于脚起飞和着陆。
+    //在脚向后移动时，由于在双支撑阶段，两个脚必须具有相同的速度，所以采用等速。
     Leph::CubicSpline stepSpline;
     stepSpline.addPoint(0.0, 0.5, -1.0/stepLength);
     stepSpline.addPoint(stepLength, -0.5, -1.0/stepLength);
@@ -87,18 +89,18 @@ bool IKWalk::walk(
         * params.swingGain
         * swingSpline.posMod(0.5 + phaseLeft + params.swingPhase);
 
-    //Compute feet forward (step) oscillation
+    //Compute feet forward (step) oscillation  //脚的前进摆动
     double leftX = params.enabledGain
         * params.stepGain
         * stepSpline.pos(phaseLeft);
     double rightX = params.enabledGain
         * params.stepGain
-        * stepSpline.pos(phaseRight);
+        * stepSpline.pos(phaseRight)+0.006; //no add before
     
     //Compute feet swing oscillation
     double leftY = swingVal;
-    double rightY = swingVal;
-    //Compute feet lateral movement oscillation
+    double rightY = swingVal; 
+    //Compute feet lateral movement oscillation  //脚的侧向摆动
     leftY += params.enabledGain
         * params.lateralGain
         * (stepSpline.pos(phaseLeft) + 0.5
@@ -107,7 +109,7 @@ bool IKWalk::walk(
         * params.lateralGain
         * (stepSpline.pos(phaseRight) + 0.5
             *(params.lateralGain >= 0.0 ? -1.0 : 1.0));
-    //Set feet lateral offset (feet distance from trunk center)
+    //Set feet lateral offset (feet distance from trunk center)//设置脚部横向偏移（脚到躯体中心的距离）
     leftY += params.footYOffset;
     rightY += -params.footYOffset;
     
@@ -173,7 +175,7 @@ bool IKWalk::walk(
     Eigen::Vector3d posRight(rightX, rightY, rightZ);
     Eigen::Vector3d angleRight(rightPitch, rightRoll, rightYaw);
     
-    //Rotate built feet trajectory to
+    //Rotate built feet trajectory to  轨迹
     //meet asked trunk Pitch and Roll new
     //ground orientation
     posLeft = rotation*posLeft;
